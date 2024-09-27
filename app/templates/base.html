@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 0 Paradise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('main.serve_css') }}">
+</head>
+<body>
+    <div class="overlay"></div>
+    <header>
+        <div class="header-content">
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('main.home') }}" class="{% if request.endpoint == 'main.home' %}active{% endif %}">Home</a></li>
+                    <li><a href="{{ url_for('main.tools') }}" class="{% if request.endpoint == 'main.tools' %}active{% endif %}">Tools</a></li>
+                    <li><a href="{{ url_for('main.combo') }}" class="{% if request.endpoint == 'main.combo' %}active{% endif %}">Combo</a></li>
+                    <li><a href="{{ url_for('main.tutorials') }}" class="{% if request.endpoint == 'main.tutorials' %}active{% endif %}">Tutorials</a></li>
+                    <li><a href="{{ url_for('main.shop') }}" class="{% if request.endpoint == 'main.shop' %}active{% endif %}">Shop</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('auth.login') }}" class="{% if request.endpoint == 'auth.login' %}active{% endif %}">Login</a></li>
+                        <li><a href="{{ url_for('auth.register') }}" class="{% if request.endpoint == 'auth.register' %}active{% endif %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="The 0 Paradise Logo" class="logo">
+                <h1>The 0 Paradise</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <audio id="background-music" autoplay loop>
+        <source src="https://ia903405.us.archive.org/6/items/aaaaa_202105/NLE%20Choppa%20-%20Shotta%20Flow%20Remix%20ft.%20Blueface%20%28Directed%20by%20Cole%20Bennett%29.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div id="volume-control">
+        <input type="range" min="0" max="1" step="0.1" value="0.5" id="volume-slider">
+    </div>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
+    <script>
+        const audio = document.getElementById('background-music');
+        const volumeSlider = document.getElementById('volume-slider');
+
+        volumeSlider.addEventListener('input', function() {
+            audio.volume = this.value;
+        });
+
+        // Set initial volume
+        audio.volume = 0.5;
+    </script>
+</body>
+</html>

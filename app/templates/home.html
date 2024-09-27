@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h2>Welcome to The 0 Paradise</h2>
+    <p>Discover cutting-edge tools, exclusive combos, and expert tutorials.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-cta">Get Started</a>
+</section>
+
+<section class="featured-tools">
+    <h3>Featured Tools</h3>
+    <div class="post-grid">
+        {% for post in featured_tools %}
+        <div class="post-card">
+            <img src="{{ url_for('main.serve_file', post_id=post.id, filename=post.thumbnail_filename) }}" alt="{{ post.title }}">
+            <div class="post-card-content">
+                <h4>{{ post.title }}</h4>
+                <p>{{ post.description[:50] }}...</p>
+                <a href="{{ url_for('main.post_detail', post_id=post.id) }}" class="btn">View</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="categories">
+    <h3>Explore Categories</h3>
+    <div class="category-grid">
+        <a href="{{ url_for('main.tools') }}" class="category-card">
+            <h4>Tools</h4>
+        </a>
+        <a href="{{ url_for('main.combo') }}" class="category-card">
+            <h4>Combo</h4>
+        </a>
+        <a href="{{ url_for('main.tutorials') }}" class="category-card">
+            <h4>Tutorials</h4>
+        </a>
+        <a href="{{ url_for('main.shop') }}" class="category-card">
+            <h4>Shop</h4>
+        </a>
+    </div>
+</section>
+{% endblock %}
